@@ -57,6 +57,10 @@ INSTALLED_APPS = [
     # rest_framework
     'rest_framework',
 
+    # OTP for admin
+    'django_otp',
+    'django_otp.plugins.otp_totp',
+
     # geodjango
     'django.contrib.gis',
     'rest_framework_gis',
@@ -94,6 +98,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -217,6 +222,8 @@ AUTHENTICATION_BACKENDS = (
     'people.backend.PersonBackend',
     'front.backend.OAuth2Backend',
 )
+
+OTP_TOTP_ISSUER = 'api.lafranceinsoumise.fr'
 
 # REST_FRAMEWORK
 

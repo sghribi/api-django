@@ -75,7 +75,7 @@ class PersonAdmin(admin.ModelAdmin):
             )
         }),
         (_('Role correspondant'), {
-            'fields': ('role_link',)
+            'fields': ('role_link', 'role__totp_device')
         }),
         (_('Meta'), {
             'fields': ('meta',)
