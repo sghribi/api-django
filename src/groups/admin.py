@@ -7,6 +7,7 @@ from django.shortcuts import reverse
 from django.db.models import Count
 from api.admin import admin_site
 from admin_steroids.filters import AjaxFieldFilter
+from admin_steroids.options import CSVModelAdminMixin
 
 from lib.admin import CenterOnFranceMixin
 from front.utils import front_url
@@ -30,7 +31,14 @@ class MembershipInline(admin.TabularInline):
 
 
 @admin.register(models.SupportGroup, site=admin_site)
-class SupportGroupAdmin(CenterOnFranceMixin, OSMGeoAdmin):
+class SupportGroupAdmin(CSVModelAdminMixin, CenterOnFranceMixin, OSMGeoAdmin):
+
+    # CSVModelAdminMixin get_actions is buggy, overwritten here
+    def get_actions(self, request):
+        if hasattr(self, 'actions') and isinstance(self.actions, list):
+            self.actions.append('csv_export')
+        return super(OSMGeoAdmin, self).get_actions(request)
+
     fieldsets = (
         (None, {
             'fields': ('id', 'name', 'link', 'created', 'modified')

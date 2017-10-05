@@ -6,7 +6,6 @@ from django.utils import timezone
 from django.utils.encoding import force_text
 from django.utils.html import format_html
 from api.admin import admin_site
-from ajax_select import make_ajax_form
 from admin_steroids.filters import AjaxFieldFilter
 
 from lib.admin import CenterOnFranceMixin
