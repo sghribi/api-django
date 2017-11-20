@@ -1,3 +1,9 @@
+import hashlib
+import hmac
+
+import qrcode
+from django.conf import settings
+from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -30,6 +36,19 @@ class LegacyPersonViewSet(NationBuilderViewMixin, ModelViewSet):
     queryset = models.Person.objects.all()
     permission_classes = (RestrictViewPermissions, )
     filter_class = PeopleFilter
+
+    @detail_route()
+    def qrcode(self, request, pk=None):
+        signature = hmac.new(
+            key=settings.PROMO_CODE_KEY,
+            msg=pk.encode('utf-8'),
+            digestmod=hashlib.sha1
+        ).hexdigest()
+        img = qrcode.make(pk + '.' + signature)
+        response = HttpResponse(content_type='image/png')
+        img.save(response, "PNG")
+
+        return response
 
     @list_route()
     def me(self, request):

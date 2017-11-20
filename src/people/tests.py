@@ -421,6 +421,12 @@ class LegacyPersonEndpointTestCase(APITestCase):
 
         self.assertCountEqual(response.data['groups'], [self.supportgroup.pk])
 
+    def test_can_see_qrcode(self):
+        self.client.force_authenticate(self.viewer_person.role)
+        response = self.client.get(reverse('legacy:person-qrcode', kwargs={'pk':self.basic_person.pk}))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
     def test_can_post_users_with_empty_null_and_blank_fields(self):
         request = self.factory.post('', data={
             'email': "putain@demerde.com",
