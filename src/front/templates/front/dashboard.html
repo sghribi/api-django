@@ -1,0 +1,57 @@
+{% extends "front/layout.html" %}
+
+{% block title %}Mon tableau de bord{% endblock title %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Mon agenda</h3>
+            <div class="list-group">
+                {% for event in rsvped_events %}
+                    <div class="list-group-item">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <a href="{% url 'view_event' event.pk %}">{{ event.name }}</a><br>
+                        {{ event.start_time }} - {{ event.location_name }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3>Mes groupes</h3>
+            <div class="list-group">
+                {% for group in all_groups %}
+                    <div class="list-group-item">
+                        <i class="fa fa-users" aria-hidden="true"></i>
+                        <a href="{% url 'view_group' group.pk %}">{{ group.name }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            {%  if managed_groups|length > 0 %}
+            <h3>Gestion des groupes</h3>
+            <div class="list-group">
+                {% for group in managed_groups %}
+                    <div class="list-group-item">
+                        <i class="fa fa-users" aria-hidden="true"></i>
+                        <a href="{% url 'view_group' group.pk %}">{{ group.name }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+            {%  endif %}
+        </div>
+        <div class="col-md-6">
+            <h3>Événements suggérés</h3>
+            <div class="list-group">
+                {% for event, reason in suggested_events %}
+                    <div class="list-group-item">
+                        <span class="small text-muted pull-right" title="{{ reason }}">Pourquoi ?</span>
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <a href="{% url 'view_event' event.pk %}">{{ event.name }}</a><br>
+                        {{ event.start_time }} - {{ event.location_name }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
